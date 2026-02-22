@@ -325,6 +325,78 @@ const Dashboard = () => {
                     </div>
                 </div>
 
+                {/* ─── AI Prediction Engine Panel ─────────────────── */}
+                <div className="bg-gradient-to-r from-[#0f1a2e] to-[#162032] rounded-lg border border-primary/20 p-6 mb-6 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl -z-0 pointer-events-none"></div>
+                    <div className="relative z-10">
+                        <div className="flex items-center gap-3 mb-5">
+                            <div className="bg-primary/20 p-2 rounded-lg">
+                                <span className="material-symbols-outlined text-primary text-[28px]">psychology</span>
+                            </div>
+                            <div>
+                                <h3 className="text-white font-bold text-lg">AI Prediction Engine</h3>
+                                <p className="text-slate-400 text-sm">LSTM Neural Network — Real-time 15-minute forecast</p>
+                            </div>
+                            <span className="ml-auto bg-green-500/20 text-green-400 text-xs font-bold px-3 py-1 rounded-full border border-green-500/30 flex items-center gap-1.5">
+                                <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse"></span>
+                                MODEL ACTIVE
+                            </span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {/* Current Volume (Input) */}
+                            <div className="bg-[#1a2744]/80 p-5 rounded-xl border border-[#2a3441]">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="material-symbols-outlined text-slate-400 text-[20px]">input</span>
+                                    <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Input — Current Volume</p>
+                                </div>
+                                <p className="text-3xl font-bold text-white font-mono">{volume}</p>
+                                <p className="text-xs text-slate-500 mt-2">vehicles/cycle (simulated sensor)</p>
+                            </div>
+
+                            {/* Arrow */}
+                            <div className="hidden md:flex items-center justify-center">
+                                <div className="flex flex-col items-center gap-2">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-16 h-px bg-gradient-to-r from-slate-600 to-primary"></div>
+                                        <div className="bg-primary/20 p-3 rounded-xl border border-primary/30">
+                                            <span className="material-symbols-outlined text-primary text-[32px]">neurology</span>
+                                        </div>
+                                        <div className="w-16 h-px bg-gradient-to-r from-primary to-slate-600"></div>
+                                    </div>
+                                    <p className="text-xs text-primary font-bold uppercase tracking-widest">LSTM Model</p>
+                                    <p className="text-[10px] text-slate-500">sigap_model.h5</p>
+                                </div>
+                            </div>
+
+                            {/* Predicted Volume (Output) */}
+                            <div className={`p-5 rounded-xl border ${isDanger ? 'bg-red-500/10 border-red-500/30' : 'bg-primary/10 border-primary/30'}`}>
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="material-symbols-outlined text-primary text-[20px]">output</span>
+                                    <p className={`text-xs font-bold uppercase tracking-wider ${isDanger ? 'text-red-400' : 'text-primary'}`}>Output — Predicted Volume</p>
+                                </div>
+                                <div className="flex items-end gap-3">
+                                    <p className={`text-3xl font-bold font-mono ${isDanger ? 'text-red-400' : 'text-primary'}`}>{predictedVolume}</p>
+                                    {predictedVolume > volume && (
+                                        <span className="text-red-400 text-sm font-medium mb-1 flex items-center">
+                                            <span className="material-symbols-outlined text-[16px]">arrow_upward</span>
+                                            +{predictedVolume - volume}
+                                        </span>
+                                    )}
+                                </div>
+                                <p className="text-xs text-slate-500 mt-2">predicted in 15 minutes</p>
+                                <div className="mt-3 flex items-center gap-2">
+                                    <div className={`h-2 flex-1 rounded-full overflow-hidden bg-[#2a3441]`}>
+                                        <div className={`h-full rounded-full transition-all duration-700 ${riskLevel > 75 ? 'bg-red-500' : riskLevel > 50 ? 'bg-yellow-500' : 'bg-primary'}`} style={{ width: `${riskLevel}%` }}></div>
+                                    </div>
+                                    <span className={`text-xs font-bold ${riskLevel > 75 ? 'text-red-400' : riskLevel > 50 ? 'text-yellow-400' : 'text-primary'}`}>{riskLevel}%</span>
+                                </div>
+                                <p className="text-[10px] text-slate-500 mt-1">congestion risk level</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Stats Cards Row */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     {/* Congestion Risk */}
