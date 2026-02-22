@@ -14,7 +14,7 @@ const Dashboard = () => {
 
     const fetchTraffic = async () => {
         try {
-            const response = await axios.get('https://kakaadsp-sigapai-backend.hf.space/api/traffic/live');
+            const response = await axios.get('https://corsproxy.io/?https://kakaadsp-sigapai-backend.hf.space/api/traffic/live');
             setTrafficData(response.data);
         } catch (error) {
             console.error("Failed to fetch data:", error);
@@ -50,7 +50,7 @@ const Dashboard = () => {
         setIsApplying(true);
         const gDiff = recommendedGreen - currentGreen;
         try {
-            const response = await axios.post('https://kakaadsp-sigapai-backend.hf.space/api/action/apply', {
+            const response = await axios.post('https://corsproxy.io/?https://kakaadsp-sigapai-backend.hf.space/api/action/apply', {
                 action: trafficData.prediction_15_mins.recommended_action
             });
             setAlertDismissed(true);
