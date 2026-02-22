@@ -15,7 +15,7 @@ const Dashboard = () => {
 
     const fetchTraffic = async () => {
         try {
-            const response = await axios.get('https://kakaadsp-sigapai-backend.hf.space/api/traffic/live');
+            const response = await axios.get(`https://kakaadsp-sigapai-backend.hf.space/api/traffic/live?t=${new Date().getTime()}`);
             setTrafficData(response.data);
             setFetchError(null);
         } catch (error) {
