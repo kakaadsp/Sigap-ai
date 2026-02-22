@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const Dashboard = () => {
     const [trafficData, setTrafficData] = useState(null);
+    const [fetchError, setFetchError] = useState(null);
     const [isApplying, setIsApplying] = useState(false);
     const [notification, setNotification] = useState("");
     const [notifType, setNotifType] = useState("success"); // success | info | warning
@@ -14,10 +15,12 @@ const Dashboard = () => {
 
     const fetchTraffic = async () => {
         try {
-            const response = await axios.get('https://corsproxy.io/?https://kakaadsp-sigapai-backend.hf.space/api/traffic/live');
+            const response = await axios.get('https://kakaadsp-sigapai-backend.hf.space/api/traffic/live');
             setTrafficData(response.data);
+            setFetchError(null);
         } catch (error) {
-            console.error("Failed to fetch data:", error);
+            console.error("Gagal mengambil data AI:", error);
+            setFetchError(error.message);
         }
     };
 
@@ -50,7 +53,7 @@ const Dashboard = () => {
         setIsApplying(true);
         const gDiff = recommendedGreen - currentGreen;
         try {
-            const response = await axios.post('https://corsproxy.io/?https://kakaadsp-sigapai-backend.hf.space/api/action/apply', {
+            const response = await axios.post('https://kakaadsp-sigapai-backend.hf.space/api/action/apply', {
                 action: trafficData.prediction_15_mins.recommended_action
             });
             setAlertDismissed(true);
@@ -85,8 +88,19 @@ const Dashboard = () => {
     if (!trafficData) {
         return (
             <div className="flex flex-col items-center justify-center p-20 text-primary h-full w-full">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mb-6"></div>
-                <p className="font-bold text-xl">Connecting to Sigap AI Engine...</p>
+                {fetchError ? (
+                    <div className="bg-red-500/10 border border-red-500 p-6 rounded-lg text-center max-w-lg">
+                        <span className="material-symbols-outlined text-red-500 text-4xl mb-2">error</span>
+                        <p className="font-bold text-red-500 text-xl mb-2">Koneksi ke AI Terputus!</p>
+                        <p className="text-slate-300 mb-4">Pesan Error Asli: <code className="bg-black/50 p-1 rounded text-yellow-400">{fetchError}</code></p>
+                        <p className="text-sm text-slate-400">Server Hugging Face mungkin sedang tertidur. Silakan tunggu 1-2 menit atau refresh halaman.</p>
+                    </div>
+                ) : (
+                    <>
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mb-6"></div>
+                        <p className="font-bold text-xl">Menghubungkan ke SIGAP AI Engine...</p>
+                    </>
+                )}
             </div>
         );
     }
